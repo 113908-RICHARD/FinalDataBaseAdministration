@@ -1,0 +1,24 @@
+
+<div class="container">
+    <form (ngSubmit)="login()" [formGroup]="loginForm">
+     
+      <div class="mb-3">
+        <label for="email" class="form-label">E-Mail</label>
+        <input type="email" name="email" id="email" formControlName="email" class="form-control" placeholder="Ingrese su correo electrónico"
+        [ngClass]="{ 'is-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched }" />
+
+        <div class="invalid-feedback" *ngIf="loginForm.get('email')?.hasError('required')">email es requerido</div>
+        <div class="invalid-feedback" *ngIf="loginForm.get('email')?.hasError('email')">el email no cumple con el formato</div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" name="password" id="password" formControlName="password" class="form-control" placeholder="Ingrese su contraseña"
+        [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }"  />
+        <div class="invalid-feedback" *ngIf="loginForm.get('email')?.hasError('required')">contraseña es requerido</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+    </form>
+    <div *ngIf="invalidCredentials" class="text-danger mt-3">Usuario/contraseña incorrectos</div>
+  </div>
+  

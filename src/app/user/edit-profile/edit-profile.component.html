@@ -1,0 +1,118 @@
+<form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+  <!-- Nombre de usuario -->
+  <div class="col-sm-10">
+    <label for="userName" class="col-sm-2 col-form-label">Nombre de usuario</label>
+    <input type="text" id="userName" formControlName="userName" class="form-control"
+           [ngClass]="{ 'is-invalid': profileForm.get('userName')?.invalid && profileForm.get('userName')?.touched }"/>
+    
+      <div class="invalid-feedback" *ngIf="profileForm.get('userName')?.hasError('required')">Nombre de usuario es requerido</div>
+      <div class="invalid-feedback" *ngIf="profileForm.get('userName')?.hasError('minlength')">Mínimo 8 caracteres</div>
+      <div class="invalid-feedback" *ngIf="profileForm.get('userName')?.hasError('maxlength')">Máximo 50 caracteres</div>
+    
+  </div>
+  
+
+ 
+  <div>
+    <label for="email">Email</label>
+    <input type="email" id="email" class="form-control" formControlName="email" [disabled]="isEmailDisabled">
+  </div>
+
+  <!-- Nombre -->
+  <div class="col-sm-10">
+    <label for="firstName" class="col-sm-2 col-form-label">Nombre</label>
+    <input type="text" id="firstName" formControlName="firstName" class="form-control"
+           [ngClass]="{ 'is-invalid': profileForm.get('firstName')?.invalid && (profileForm.get('firstName')?.dirty || profileForm.get('firstName')?.touched) }"/>
+
+      <div class="invalid-feedback" *ngIf="profileForm.get('firstName')?.hasError('required')">Nombre es requerido</div>
+      <div class="invalid-feedback" *ngIf="profileForm.get('firstName')?.hasError('maxlength')">Máximo 20 caracteres</div>
+    
+  </div>
+  
+
+  <!-- Apellido -->
+  <div class="col-sm-10">
+    <label for="lastName" class="col-sm-2 col-form-label">Apellido</label>
+    <input type="text" id="lastName" formControlName="lastName" class="form-control"
+           [ngClass]="{ 'is-invalid': profileForm.get('lastName')?.invalid && (profileForm.get('lastName')?.dirty || profileForm.get('lastName')?.touched) }"/>
+
+      <div class="invalid-feedback" *ngIf="profileForm.get('lastName')?.hasError('required')">Apellido es requerido</div>
+      <div class="invalid-feedback" *ngIf="profileForm.get('lastName')?.hasError('maxlength')">Máximo 25 caracteres</div>
+   
+  </div>
+  
+
+  <!-- País -->
+  <div class="col-sm-10">
+    <label for="countryId" class="col-sm-2 col-form-label">País</label>
+    <select id="countryId" formControlName="countryId" class="form-control" (change)="onCountryChange()"
+            [ngClass]="{ 'is-invalid': profileForm.get('countryId')?.invalid && (profileForm.get('countryId')?.dirty || profileForm.get('countryId')?.touched) }">
+      <option value="" disabled>Select a country</option>
+      <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+    </select>
+
+      <div class="invalid-feedback" *ngIf="profileForm.get('countryId')?.hasError('required')">País es requerido</div>
+    
+  </div>
+  
+
+  <!-- Provincia -->
+  <div class="col-sm-10">
+    <label for="stateId" class="col-sm-2 col-form-label">State</label>
+    <select id="stateId" formControlName="stateId" class="form-control"
+            [ngClass]="{ 'is-invalid': profileForm.get('stateId')?.invalid && (profileForm.get('stateId')?.dirty || profileForm.get('stateId')?.touched) }">
+      <option value="" disabled>Select a state</option>
+      <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
+    </select>
+
+      <div class="invalid-feedback" *ngIf="profileForm.get('stateId')?.hasError('required')">estado es requerido</div>
+    
+  </div>
+
+  <!-- Teléfono -->
+  <div class="col-sm-10">
+    <label for="phoneNumber" class="col-sm-2 col-form-label">Teléfono</label>
+    <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control"
+           [ngClass]="{ 'is-invalid': profileForm.get('phoneNumber')?.invalid && (profileForm.get('phoneNumber')?.dirty || profileForm.get('phoneNumber')?.touched) }"/>
+    
+      <div class="invalid-feedback" *ngIf="profileForm.get('phoneNumber')?.hasError('required')">Teléfono es requerido</div>
+      <div class="invalid-feedback" *ngIf="profileForm.get('phoneNumber')?.hasError('invalidPhoneNumber')">Formato inválido. Debe ser XXX-XXX-XXX</div>
+    
+  </div>
+  
+
+  
+
+</form>
+<h3 class="h3">Hobbies</h3>
+
+<form [formGroup]="hobbieForm">
+    <div class="row">
+      <div class="col">
+        
+        <button class="btn btn-primary" (click)="toggleHobbieInput()">New</button>
+        <ng-container formArrayName="selectedHobbies">
+          <ng-container *ngFor="let hobbie of hobbiesForm.controls; let i = index">
+            <div [formGroupName]="i" class="row">
+              <strong>Hobbie {{i+1}}</strong>
+              <div class="mb-3 col-5">
+                <select class="form-control" formControlName="hobbie"   [ngClass]="{
+                    'is-invalid': hobbie.get('hobbie')?.invalid && hobbie.get('hobbie')?.touched
+                  }">
+                  <option value="" disabled selected>Select a hobbie</option>
+                  <option *ngFor="let hobbie of hobbies" [value]="hobbie.id">{{ hobbie.name }}</option>
+                </select>
+                <div class="invalid-feedback" *ngIf="hobbie.get('hobby')?.hasError('required') && hobbie.get('hobbie')?.touched">
+                  seleccione un hobbie
+                  </div>
+              </div>
+              <div class="col-2">
+                <button class="btn btn-danger" (click)="removeCountry(i)">X</button>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+  <button type="submit" [disabled]="profileForm.invalid" (click)="saveProfile()" class="btn btn-primary">Guardar</button>
